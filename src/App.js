@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './config/theme';
+import Login from './components/Login';
+import RegistroPicadoIngreso from './components/RegistroPicadoIngreso';
+import Reportes from './components/Reportes';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route
+              path="/registro-picado"
+              element={
+                <ProtectedRoute>
+                  <RegistroPicadoIngreso />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reportes"
+              element={
+                <ProtectedRoute>
+                  <Reportes />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
